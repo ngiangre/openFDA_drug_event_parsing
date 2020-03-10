@@ -6,6 +6,20 @@ __pycache__/
 # C extensions
 *.so
 
+# Data is too large
+data/
+
+# not sure if I can show due to licensing agreements
+vocabulary_SNOMED_MEDDRA_RxNorm_ATC/
+RxNorm_relationships_tables/
+vocabulary_various/
+
+# don't show my openFDA API credentials
+.openFDA.params
+
+# Mac specific
+.DS_Store
+
 # Distribution / packaging
 .Python
 build/

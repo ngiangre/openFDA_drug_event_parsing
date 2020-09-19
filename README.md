@@ -13,12 +13,24 @@ The order of code execution goes:
 20191230_rxnorm_hierarchy_tables.ipynb
 
 Parsing.ipynb/Parsing.py
+
 -->
+
 openFDA_Entity_Relationship_Tables.ipynb/openFDA_Entity_Relationship_Tables.py
+
 -->
+
 Pediatrics_data_parsing.ipynb/Pediatrics_data_parsing.py
+
 -->
+
 Exploring.ipynb
+
+```
+python3 Parsing.py
+python3 openFDA_Entity_Relationship_Tables.py
+python3 Pediatrics_data_parsing.py #optional
+```
 
 ## Notes:
 

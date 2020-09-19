@@ -80,6 +80,11 @@ drug_event_files = [x['file'] for x in data['results']['drug']['event']['partiti
 
 
 data_dir = "../../data/"
+try:
+    os.mkdir(data_dir)
+except:
+    print(data_dir+' exists')
+    
 out=data_dir+'openFDA_drug_event/'
 try:
     os.mkdir(out)
@@ -577,7 +582,7 @@ from joblib import Parallel, delayed
 #from dask import delayed, compute, persist
 #from dask.distributed import Client, LocalCluster, progress
 
-n_jobs = 50
+n_jobs = 4
 
 #if __name__=='__main__':
 t0_loop = time.time()

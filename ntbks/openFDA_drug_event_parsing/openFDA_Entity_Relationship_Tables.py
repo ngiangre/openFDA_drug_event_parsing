@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[205]:
+# In[ ]:
 
 
 import glob
@@ -10,6 +10,7 @@ import pandas as pd
 from dask import delayed, compute
 import dask.dataframe as dd
 import pickle
+import os
 
 data_dir = "../../data/openFDA_drug_event/"
 er_dir = data_dir+'er_tables/'
@@ -20,9 +21,9 @@ except:
     print(er_dir+" exists")
 
 
-# ## dask delayed functions
+# ## functions
 
-# In[206]:
+# In[ ]:
 
 
 primarykey = 'safetyreportid'
@@ -37,7 +38,7 @@ def read_file(file):
 
 # #### report_df
 
-# In[207]:
+# In[ ]:
 
 
 dir_ = data_dir+'report/'
@@ -54,7 +55,7 @@ report_df.head()
 
 # #### report_er_df
 
-# In[15]:
+# In[ ]:
 
 
 columns = [primarykey,'receiptdate',
@@ -79,7 +80,7 @@ print(report_er_df.info())
 report_er_df.head()
 
 
-# In[18]:
+# In[ ]:
 
 
 (report_er_df.
@@ -98,7 +99,7 @@ del report_er_df
 
 # ### report_serious
 
-# In[19]:
+# In[ ]:
 
 
 columns = [primarykey,'serious',
@@ -132,7 +133,7 @@ print(report_serious_er_df.info())
 report_serious_er_df.head()
 
 
-# In[29]:
+# In[ ]:
 
 
 (report_serious_er_df).to_csv(er_dir+'report_serious.csv.gz',compression='gzip',index=False)
@@ -140,7 +141,7 @@ report_serious_er_df.head()
 
 # ### reporter
 
-# In[1]:
+# In[ ]:
 
 
 columns = [primarykey,'companynumb',
@@ -168,13 +169,13 @@ print(reporter_er_df.info())
 reporter_er_df.head()
 
 
-# In[36]:
+# In[ ]:
 
 
 (reporter_er_df).to_csv(er_dir+'reporter.csv.gz',compression='gzip',index=False)
 
 
-# In[41]:
+# In[ ]:
 
 
 try:
@@ -203,7 +204,7 @@ except:
 
 # #### patient_df
 
-# In[42]:
+# In[ ]:
 
 
 dir_ = data_dir+'patient/'
@@ -220,7 +221,7 @@ patient_df.head()
 
 # #### patient_er_df
 
-# In[43]:
+# In[ ]:
 
 
 columns = [primarykey,
@@ -255,13 +256,13 @@ print(patient_er_df.info())
 patient_er_df.head()
 
 
-# In[47]:
+# In[ ]:
 
 
 (patient_er_df).to_csv(er_dir+'patient.csv.gz',compression='gzip',index=False)
 
 
-# In[48]:
+# In[ ]:
 
 
 del df 
@@ -272,7 +273,7 @@ del patient_df
 
 # #### patient.drug
 
-# In[49]:
+# In[ ]:
 
 
 dir_ = data_dir+'patient_drug/'
@@ -289,7 +290,7 @@ patient_drug_df.head()
 
 # #### drugcharacteristics_er_df
 
-# In[60]:
+# In[ ]:
 
 
 columns = [primarykey,
@@ -319,14 +320,14 @@ print(drugcharacteristics_er_df.info())
 drugcharacteristics_er_df.head()
 
 
-# In[63]:
+# In[ ]:
 
 
 (drugcharacteristics_er_df
 ).to_csv(er_dir+'drugcharacteristics.csv.gz',compression='gzip',index=False)
 
 
-# In[64]:
+# In[ ]:
 
 
 del drugcharacteristics_er_df
@@ -338,7 +339,7 @@ del df
 
 # #### patient.drug.openfda.rxcui_df
 
-# In[65]:
+# In[ ]:
 
 
 dir_ = data_dir+'patient_drug_openfda_rxcui/'
@@ -358,7 +359,7 @@ patient_drug_openfda_rxcui_df.head()
 
 # #### drugs_er_df
 
-# In[66]:
+# In[ ]:
 
 
 columns = [primarykey,
@@ -381,25 +382,25 @@ print(drugs_er_df.info())
 drugs_er_df.head()
 
 
-# In[70]:
+# In[ ]:
 
 
 drugs_er_df['rxcui'] = drugs_er_df['rxcui'].astype(int)
 
 
-# In[71]:
+# In[ ]:
 
 
 drugs_er_df[primarykey] = drugs_er_df[primarykey].astype(str)
 
 
-# In[72]:
+# In[ ]:
 
 
 (drugs_er_df).to_csv(er_dir+'drugs.csv.gz',compression='gzip',index=False)
 
 
-# In[73]:
+# In[ ]:
 
 
 del patient_drug_openfda_rxcui_df
@@ -411,7 +412,7 @@ del df
 
 # #### patient.reaction_df
 
-# In[74]:
+# In[ ]:
 
 
 dir_ = data_dir+'patient_reaction/'
@@ -428,7 +429,7 @@ patient_reaction_df.head()
 
 # #### patient_reaction_er_df
 
-# In[75]:
+# In[ ]:
 
 
 columns = [primarykey,
@@ -454,13 +455,13 @@ print(reactions_er_df.info())
 reactions_er_df.head()
 
 
-# In[76]:
+# In[ ]:
 
 
 (reactions_er_df).to_csv(er_dir+'reactions.csv.gz',compression='gzip',index=False)
 
 
-# In[77]:
+# In[ ]:
 
 
 del patient_reaction_df
@@ -470,7 +471,7 @@ del df
 
 # ### omop tables for joining
 
-# In[110]:
+# In[ ]:
 
 
 concept = (pd.read_csv('../../vocabulary_SNOMED_MEDDRA_RxNorm_ATC/CONCEPT.csv',sep='\t',
@@ -480,7 +481,7 @@ concept = (pd.read_csv('../../vocabulary_SNOMED_MEDDRA_RxNorm_ATC/CONCEPT.csv',s
 concept.head()
 
 
-# In[111]:
+# In[ ]:
 
 
 concept_relationship = (pd.
@@ -495,7 +496,7 @@ concept_relationship.head()
 
 # ### standard_drugs
 
-# In[5]:
+# In[ ]:
 
 
 drugs = (pd.read_csv(
@@ -508,32 +509,32 @@ drugs = (pd.read_csv(
         )
 
 
-# In[6]:
+# In[ ]:
 
 
 drugs['rxcui'] = drugs['rxcui'].astype(int)
 
 
-# In[7]:
+# In[ ]:
 
 
 urxcuis = drugs['rxcui'].unique()
 
 
-# In[8]:
+# In[ ]:
 
 
 print(len(urxcuis))
 urxcuis[:5]
 
 
-# In[9]:
+# In[ ]:
 
 
 rxnorm_concept = concept.query('vocabulary_id=="RxNorm"')
 
 
-# In[10]:
+# In[ ]:
 
 
 concept_codes = rxnorm_concept['concept_code'].astype(int).unique()
@@ -546,14 +547,14 @@ print(len(intersect))
 print(len(intersect)/len(urxcuis))
 
 
-# In[11]:
+# In[ ]:
 
 
 del urxcuis
 del concept_codes
 
 
-# In[12]:
+# In[ ]:
 
 
 rxnorm_concept = concept.query('vocabulary_id=="RxNorm"')
@@ -605,19 +606,19 @@ print(joined.shape)
 print(joined.head())
 
 
-# In[13]:
+# In[ ]:
 
 
 len(np.intersect1d(joined.RxNorm_concept_code.unique(),intersect))/len(intersect)
 
 
-# In[14]:
+# In[ ]:
 
 
 ids = joined.RxNorm_concept_id.dropna().astype(int).unique()
 
 
-# In[117]:
+# In[ ]:
 
 
 pickle.dump(
@@ -632,7 +633,7 @@ pickle.dump(
 (joined.to_csv(er_dir+'standard_drugs.csv.gz',compression='gzip',index=False))
 
 
-# In[15]:
+# In[ ]:
 
 
 del joined
@@ -640,7 +641,7 @@ del joined
 
 # ### standard_reactions
 
-# In[25]:
+# In[ ]:
 
 
 patient_reaction_df = (pd.read_csv(
@@ -656,20 +657,20 @@ print(patient_reaction_df.safetyreportid.nunique())
 print(patient_reaction_df.reaction_meddrapt.nunique())
 
 
-# In[18]:
+# In[ ]:
 
 
 patient_reaction_df.head()
 
 
-# In[19]:
+# In[ ]:
 
 
 meddra_concept = concept.query('vocabulary_id=="MedDRA"')
 meddra_concept.head()
 
 
-# In[20]:
+# In[ ]:
 
 
 reactions = patient_reaction_df.reaction_meddrapt.copy().astype(str).str.title().unique()
@@ -683,7 +684,7 @@ print(len(intersect_title))
 print(len(intersect_title)/len(reactions))
 
 
-# In[21]:
+# In[ ]:
 
 
 patient_reaction_df['reaction_meddrapt'] = (patient_reaction_df['reaction_meddrapt'].
@@ -716,14 +717,14 @@ print(joined.shape[0])
 print(joined.head())
 
 
-# In[22]:
+# In[ ]:
 
 
 del meddra_concept
 del patient_reaction_df
 
 
-# In[23]:
+# In[ ]:
 
 
 joined_notnull = joined[joined.MedDRA_concept_id.notnull()]
@@ -732,7 +733,7 @@ joined_notnull['MedDRA_concept_id'] = joined_notnull['MedDRA_concept_id'].astype
 print(joined_notnull.head())
 
 
-# In[27]:
+# In[ ]:
 
 
 print(
@@ -745,7 +746,7 @@ print(
 )
 
 
-# In[24]:
+# In[ ]:
 
 
 print(joined_notnull.MedDRA_concept_class_id.value_counts())
@@ -753,7 +754,7 @@ print(joined_notnull.safetyreportid.nunique())
 print(joined_notnull.MedDRA_concept_id.nunique())
 
 
-# In[15]:
+# In[ ]:
 
 
 pickle.dump(
@@ -762,19 +763,19 @@ pickle.dump(
 )
 
 
-# In[18]:
+# In[ ]:
 
 
 (joined_notnull.to_csv(er_dir+'standard_reactions.csv.gz',compression='gzip',index=False))
 
 
-# In[16]:
+# In[ ]:
 
 
 del joined_notnull
 
 
-# In[19]:
+# In[ ]:
 
 
 del joined
@@ -782,7 +783,7 @@ del joined
 
 # ### standard_drugs_atc
 
-# In[74]:
+# In[ ]:
 
 
 standard_drugs = (pd.read_csv(
@@ -794,39 +795,39 @@ standard_drugs = (pd.read_csv(
 ))
 
 
-# In[75]:
+# In[ ]:
 
 
 all_reports = standard_drugs.safetyreportid.unique()
 len(all_reports)
 
 
-# In[76]:
+# In[ ]:
 
 
 standard_drugs.RxNorm_concept_id = standard_drugs.RxNorm_concept_id.astype(int)
 
 
-# In[77]:
+# In[ ]:
 
 
 standard_drugs.head()
 
 
-# In[78]:
+# In[ ]:
 
 
 rxnorm_concept = concept.query('vocabulary_id=="RxNorm"')
 rxnorm_concept_ids = rxnorm_concept['concept_id'].unique()
 
 
-# In[79]:
+# In[ ]:
 
 
 openfda_concept_ids = standard_drugs.RxNorm_concept_id.dropna().astype(int).unique()
 
 
-# In[80]:
+# In[ ]:
 
 
 atc_concept = concept.query('vocabulary_id=="ATC" & concept_class_id=="ATC 5th"')
@@ -847,7 +848,7 @@ rc['concept_id'] = rc['concept_id'].astype(int)
 rxnorm_concept_ids = rc['concept_id'].unique()
 
 
-# In[81]:
+# In[ ]:
 
 
 rxnorm_to_atc_relationships = (r.
@@ -903,13 +904,13 @@ print(rxnorm_to_atc_relationships.shape)
 print(rxnorm_to_atc_relationships.head())
 
 
-# In[82]:
+# In[ ]:
 
 
 rxnorm_to_atc_relationships.ATC_concept_class_id.value_counts()
 
 
-# In[83]:
+# In[ ]:
 
 
 del r
@@ -917,7 +918,7 @@ del ac
 del rc
 
 
-# In[85]:
+# In[ ]:
 
 
 standard_drugs_atc = (standard_drugs.
@@ -947,28 +948,30 @@ print(standard_drugs_atc.info())
 print(standard_drugs_atc.head())
 
 
-# In[37]:
+# In[ ]:
 
 
 del standard_drugs
 del rxnorm_to_atc_relationships
 
 
-# In[38]:
+# In[ ]:
 
 
 standard_drugs_atc.to_csv(er_dir+'standard_drugs_atc.csv.gz',compression='gzip',index=False)
 
 
-# In[39]:
+# In[ ]:
 
 
 del standard_drugs_atc
 
 
 # ### standard_drugs_rxnorm_ingredients
+# 
+# https://www.nlm.nih.gov/research/umls/rxnorm/overview.html
 
-# In[152]:
+# In[ ]:
 
 
 all_openFDA_rxnorm_concept_ids = pickle.load(
@@ -976,13 +979,13 @@ all_openFDA_rxnorm_concept_ids = pickle.load(
 )
 
 
-# In[153]:
+# In[ ]:
 
 
 all_openFDA_rxnorm_concept_ids
 
 
-# In[154]:
+# In[ ]:
 
 
 all_rxnorm_concept_ids = (concept.
@@ -993,7 +996,7 @@ all_rxnorm_concept_ids = (concept.
                          )
 
 
-# In[155]:
+# In[ ]:
 
 
 r = (concept_relationship.
@@ -1006,7 +1009,7 @@ r.concept_id_1 = r.concept_id_1.astype(int)
 r.concept_id_2 = r.concept_id_2.astype(int)
 
 
-# In[156]:
+# In[ ]:
 
 
 c = (concept.
@@ -1020,7 +1023,7 @@ c = (concept.
 c.concept_id = c.concept_id.astype(int).copy()
 
 
-# In[157]:
+# In[ ]:
 
 
 all_rxnorm_concept_ids = concept.query('vocabulary_id=="RxNorm"').concept_id.astype(int).unique()
@@ -1033,7 +1036,7 @@ rxnorm_relationships = (r.
 rxnorm_relationships
 
 
-# In[158]:
+# In[ ]:
 
 
 first_second_relations = (r.
@@ -1079,7 +1082,7 @@ first_second_relations = (first_second_relations.
 print(first_second_relations.head())
 
 
-# In[159]:
+# In[ ]:
 
 
 (first_second_relations.loc[:,['RxNorm_concept_class_id_1','RxNorm_concept_class_id_2']].
@@ -1088,7 +1091,7 @@ groupby(['RxNorm_concept_class_id_1','RxNorm_concept_class_id_2']).
 )
 
 
-# In[160]:
+# In[ ]:
 
 
 ids = first_second_relations.RxNorm_concept_id_2.astype(int).unique()
@@ -1136,7 +1139,7 @@ second_third_relations = (second_third_relations.
 print(second_third_relations.head())
 
 
-# In[161]:
+# In[ ]:
 
 
 (second_third_relations.loc[:,['RxNorm_concept_class_id_2','RxNorm_concept_class_id_3']].
@@ -1145,7 +1148,7 @@ groupby(['RxNorm_concept_class_id_2','RxNorm_concept_class_id_3']).
 )
 
 
-# In[162]:
+# In[ ]:
 
 
 ids = second_third_relations.RxNorm_concept_id_3.astype(int).unique()
@@ -1193,7 +1196,7 @@ third_fourth_relations = (third_fourth_relations.
 print(third_fourth_relations.head())
 
 
-# In[163]:
+# In[ ]:
 
 
 (third_fourth_relations.loc[:,['RxNorm_concept_class_id_3','RxNorm_concept_class_id_4']].
@@ -1202,7 +1205,7 @@ groupby(['RxNorm_concept_class_id_3','RxNorm_concept_class_id_4']).
 )
 
 
-# In[164]:
+# In[ ]:
 
 
 ids = third_fourth_relations.RxNorm_concept_id_4.astype(int).unique()
@@ -1250,7 +1253,7 @@ fourth_fifth_relations = (fourth_fifth_relations.
 print(fourth_fifth_relations.head())
 
 
-# In[165]:
+# In[ ]:
 
 
 (fourth_fifth_relations.loc[:,['RxNorm_concept_class_id_4','RxNorm_concept_class_id_5']].
@@ -1259,7 +1262,7 @@ groupby(['RxNorm_concept_class_id_4','RxNorm_concept_class_id_5']).
 )
 
 
-# In[166]:
+# In[ ]:
 
 
 ids = fourth_fifth_relations.RxNorm_concept_id_4.astype(int).unique()
@@ -1307,7 +1310,7 @@ fifth_sixth_relations = (fifth_sixth_relations.
 print(fifth_sixth_relations.head())
 
 
-# In[167]:
+# In[ ]:
 
 
 (fifth_sixth_relations.loc[:,['RxNorm_concept_class_id_5','RxNorm_concept_class_id_6']].
@@ -1316,7 +1319,7 @@ groupby(['RxNorm_concept_class_id_5','RxNorm_concept_class_id_6']).
 )
 
 
-# In[168]:
+# In[ ]:
 
 
 rxnorm_to_ings123 = (first_second_relations.
@@ -1334,7 +1337,7 @@ print(rxnorm_to_ings123.shape)
 print(rxnorm_to_ings123.head())
 
 
-# In[169]:
+# In[ ]:
 
 
 len(np.intersect1d(
@@ -1343,7 +1346,7 @@ len(np.intersect1d(
 ))/len(all_openFDA_rxnorm_concept_ids)
 
 
-# In[170]:
+# In[ ]:
 
 
 (rxnorm_to_ings123.
@@ -1352,7 +1355,7 @@ drop_duplicates()
 ).head()
 
 
-# In[171]:
+# In[ ]:
 
 
 (rxnorm_to_ings123.
@@ -1362,7 +1365,7 @@ loc[:,['RxNorm_concept_class_id_1','RxNorm_concept_class_id_2',
 )
 
 
-# In[172]:
+# In[ ]:
 
 
 rxnorm_to_ings123_to_add = (rxnorm_to_ings123.
@@ -1384,7 +1387,7 @@ print(rxnorm_to_ings123_to_add.shape)
 rxnorm_to_ings123_to_add.head()
 
 
-# In[173]:
+# In[ ]:
 
 
 rxnorm_to_ings1234 = (first_second_relations.
@@ -1415,7 +1418,7 @@ print(rxnorm_to_ings1234.shape)
 rxnorm_to_ings1234.head()
 
 
-# In[174]:
+# In[ ]:
 
 
 (rxnorm_to_ings1234.
@@ -1427,7 +1430,7 @@ len(np.intersect1d(rxnorm_to_ings1234.RxNorm_concept_id_1.dropna().astype(int).u
                   ))/len(all_openFDA_rxnorm_concept_ids)
 
 
-# In[175]:
+# In[ ]:
 
 
 (rxnorm_to_ings1234.
@@ -1437,7 +1440,7 @@ loc[:,['RxNorm_concept_class_id_1','RxNorm_concept_class_id_2',
 )
 
 
-# In[176]:
+# In[ ]:
 
 
 rxnorm_to_ings1234_to_add = (rxnorm_to_ings1234.
@@ -1459,7 +1462,7 @@ print(rxnorm_to_ings1234_to_add.shape)
 rxnorm_to_ings1234_to_add.head()
 
 
-# In[177]:
+# In[ ]:
 
 
 len(
@@ -1473,7 +1476,7 @@ len(
                   )/len(all_openFDA_rxnorm_concept_ids)
 
 
-# In[178]:
+# In[ ]:
 
 
 rxnorm_to_ings12345 = (first_second_relations.
@@ -1517,7 +1520,7 @@ print(rxnorm_to_ings12345.shape)
 rxnorm_to_ings12345.head()
 
 
-# In[179]:
+# In[ ]:
 
 
 (rxnorm_to_ings12345.
@@ -1529,7 +1532,7 @@ len(np.intersect1d(rxnorm_to_ings12345.RxNorm_concept_id_1.dropna().astype(int).
                   ))/len(all_openFDA_rxnorm_concept_ids)
 
 
-# In[180]:
+# In[ ]:
 
 
 (rxnorm_to_ings12345.
@@ -1540,7 +1543,7 @@ loc[:,['RxNorm_concept_class_id_1','RxNorm_concept_class_id_2',
 )
 
 
-# In[181]:
+# In[ ]:
 
 
 rxnorm_to_ings12345_to_add = (rxnorm_to_ings12345.
@@ -1562,7 +1565,7 @@ print(rxnorm_to_ings12345_to_add.shape)
 rxnorm_to_ings12345_to_add.head()
 
 
-# In[182]:
+# In[ ]:
 
 
 len(
@@ -1579,7 +1582,7 @@ len(
                   )/len(all_openFDA_rxnorm_concept_ids)
 
 
-# In[183]:
+# In[ ]:
 
 
 np.setdiff1d(
@@ -1594,7 +1597,7 @@ np.setdiff1d(
     )
 
 
-# In[184]:
+# In[ ]:
 
 
 rxnorm_to_ings123456 = (first_second_relations.
@@ -1651,7 +1654,7 @@ print(rxnorm_to_ings123456.shape)
 rxnorm_to_ings123456.head()
 
 
-# In[185]:
+# In[ ]:
 
 
 (rxnorm_to_ings123456.
@@ -1663,7 +1666,7 @@ len(np.intersect1d(rxnorm_to_ings123456.RxNorm_concept_id_1.dropna().astype(int)
                   ))/len(all_openFDA_rxnorm_concept_ids)
 
 
-# In[186]:
+# In[ ]:
 
 
 (rxnorm_to_ings123456.
@@ -1674,7 +1677,7 @@ loc[:,['RxNorm_concept_class_id_1','RxNorm_concept_class_id_2',
 )
 
 
-# In[187]:
+# In[ ]:
 
 
 rxnorm_to_ings123456_to_add = (rxnorm_to_ings123456.
@@ -1696,7 +1699,7 @@ print(rxnorm_to_ings123456_to_add.shape)
 rxnorm_to_ings123456_to_add.head()
 
 
-# In[188]:
+# In[ ]:
 
 
 len(
@@ -1716,7 +1719,7 @@ len(
                   )/len(all_openFDA_rxnorm_concept_ids)
 
 
-# In[189]:
+# In[ ]:
 
 
 np.setdiff1d(
@@ -1734,7 +1737,7 @@ np.setdiff1d(
 )
 
 
-# In[190]:
+# In[ ]:
 
 
 rxnorm_to_ings_all = pd.concat(
@@ -1750,7 +1753,7 @@ print(rxnorm_to_ings_all.shape)
 rxnorm_to_ings_all.head()
 
 
-# In[191]:
+# In[ ]:
 
 
 len(
@@ -1761,7 +1764,7 @@ len(
 )/len(all_openFDA_rxnorm_concept_ids)
 
 
-# In[202]:
+# In[ ]:
 
 
 standard_drug = (pd.
@@ -1777,7 +1780,7 @@ print(standard_drug.shape)
 standard_drug.head()
 
 
-# In[203]:
+# In[ ]:
 
 
 standard_drug_ingredients = ((standard_drug.
@@ -1817,7 +1820,7 @@ print(standard_drug_ingredients.shape)
 standard_drug_ingredients.head()
 
 
-# In[204]:
+# In[ ]:
 
 
 print(len(
@@ -1837,7 +1840,7 @@ print(len(
 
 # ### standard_reactions_meddra_relationships
 
-# In[46]:
+# In[ ]:
 
 
 standard_reactions = (pd.
@@ -1853,7 +1856,7 @@ print(standard_reactions.shape)
 print(standard_reactions.head())
 
 
-# In[47]:
+# In[ ]:
 
 
 reactions = standard_reactions.MedDRA_concept_id.astype(int).unique()
@@ -1866,7 +1869,7 @@ print(len(intersect))
 print(len(intersect)/len(reactions))
 
 
-# In[48]:
+# In[ ]:
 
 
 meddra_concept = concept.query('vocabulary_id=="MedDRA"')
@@ -1882,7 +1885,7 @@ r.concept_id_1 = r.concept_id_1.astype(int)
 r.concept_id_2 = r.concept_id_2.astype(int)
 
 
-# In[49]:
+# In[ ]:
 
 
 (r.
@@ -1892,7 +1895,7 @@ relationship_id.value_counts()
 )
 
 
-# In[50]:
+# In[ ]:
 
 
 c = meddra_concept.copy()
@@ -1943,14 +1946,14 @@ print(all_meddra_relationships.shape)
 print(all_meddra_relationships.head())
 
 
-# In[51]:
+# In[ ]:
 
 
 print(all_meddra_relationships.MedDRA_concept_class_id_1.value_counts())
 print(all_meddra_relationships.MedDRA_concept_class_id_2.value_counts())
 
 
-# In[52]:
+# In[ ]:
 
 
 all_meddra_relationships.MedDRA_concept_id_1 = (all_meddra_relationships.
@@ -1971,7 +1974,7 @@ all_meddra_relationships.MedDRA_concept_code_2 = (all_meddra_relationships.
                                                  )
 
 
-# In[53]:
+# In[ ]:
 
 
 first_rxs = reactions
@@ -1987,7 +1990,7 @@ print(first_relations.head())
 print(first_relations.MedDRA_concept_class_id_2.value_counts())
 
 
-# In[54]:
+# In[ ]:
 
 
 second_rxs = first_relations.MedDRA_concept_id_2.unique()
@@ -2016,7 +2019,7 @@ print(second_relations.MedDRA_concept_class_id_2.value_counts())
 print(second_relations.MedDRA_concept_class_id_3.value_counts())
 
 
-# In[55]:
+# In[ ]:
 
 
 third_rxs = second_relations.MedDRA_concept_id_3.unique()
@@ -2045,7 +2048,7 @@ print(third_relations.MedDRA_concept_class_id_3.value_counts())
 print(third_relations.MedDRA_concept_class_id_4.value_counts())
 
 
-# In[56]:
+# In[ ]:
 
 
 first_second_third_relations = (first_relations.
@@ -2070,7 +2073,7 @@ print(first_second_third_relations.MedDRA_concept_class_id_2.value_counts())
 print(first_second_third_relations.MedDRA_concept_class_id_3.value_counts())
 
 
-# In[57]:
+# In[ ]:
 
 
 first_second_third_fourth_relations = (first_relations.
@@ -2106,13 +2109,13 @@ print(first_second_third_fourth_relations.MedDRA_concept_class_id_3.value_counts
 print(first_second_third_fourth_relations.MedDRA_concept_class_id_4.value_counts())
 
 
-# In[58]:
+# In[ ]:
 
 
 len(np.setdiff1d(reactions,first_second_third_fourth_relations.MedDRA_concept_id_1.unique()))
 
 
-# In[59]:
+# In[ ]:
 
 
 left_over = np.setdiff1d(reactions,first_second_third_fourth_relations.MedDRA_concept_id_1.unique())
@@ -2120,7 +2123,7 @@ left_over = np.setdiff1d(reactions,first_second_third_fourth_relations.MedDRA_co
 all_meddra_relationships.query('MedDRA_concept_id_1 in @left_over')
 
 
-# In[60]:
+# In[ ]:
 
 
 df1 = (standard_reactions.
@@ -2132,7 +2135,7 @@ df1 = (standard_reactions.
 print(df1.shape)
 
 
-# In[61]:
+# In[ ]:
 
 
 df2 = (first_second_third_fourth_relations.
@@ -2141,7 +2144,7 @@ df2 = (first_second_third_fourth_relations.
 print(df2.shape)
 
 
-# In[62]:
+# In[ ]:
 
 
 joined = df1.join(df2).rename_axis('MedDRA_concept_id_1').reset_index().dropna()
@@ -2158,7 +2161,7 @@ print(joined.shape)
 print(joined.head())
 
 
-# In[63]:
+# In[ ]:
 
 
 print(joined.MedDRA_concept_class_id_1.value_counts())
@@ -2167,7 +2170,7 @@ print(joined.MedDRA_concept_class_id_3.value_counts())
 print(joined.MedDRA_concept_class_id_4.value_counts())
 
 
-# In[23]:
+# In[ ]:
 
 
 (joined.
@@ -2176,7 +2179,7 @@ print(joined.MedDRA_concept_class_id_4.value_counts())
 )
 
 
-# In[64]:
+# In[ ]:
 
 
 pt_to_soc = (joined.
@@ -2191,7 +2194,7 @@ print(pt_to_soc.shape)
 print(pt_to_soc.head())
 
 
-# In[65]:
+# In[ ]:
 
 
 pt_to_hlgt = (joined.
@@ -2206,7 +2209,7 @@ print(pt_to_hlgt.shape)
 print(pt_to_hlgt.head())
 
 
-# In[66]:
+# In[ ]:
 
 
 pt_to_hlt = (joined.
@@ -2221,7 +2224,7 @@ print(pt_to_hlt.shape)
 print(pt_to_hlt.head())
 
 
-# In[67]:
+# In[ ]:
 
 
 standard_reactions_pt_to_hlt = (standard_reactions.
@@ -2253,7 +2256,7 @@ print(standard_reactions_pt_to_hlt.shape)
 print(standard_reactions_pt_to_hlt.head())
 
 
-# In[68]:
+# In[ ]:
 
 
 print(
@@ -2266,7 +2269,7 @@ print(
 )
 
 
-# In[29]:
+# In[ ]:
 
 
 (standard_reactions_pt_to_hlt.
@@ -2275,7 +2278,7 @@ print(
 )
 
 
-# In[69]:
+# In[ ]:
 
 
 standard_reactions_pt_to_hlgt = (standard_reactions.
@@ -2307,7 +2310,7 @@ print(standard_reactions_pt_to_hlgt.shape)
 print(standard_reactions_pt_to_hlgt.head())
 
 
-# In[70]:
+# In[ ]:
 
 
 print(
@@ -2320,7 +2323,7 @@ print(
 )
 
 
-# In[32]:
+# In[ ]:
 
 
 (standard_reactions_pt_to_hlgt.
@@ -2329,7 +2332,7 @@ print(
 )
 
 
-# In[71]:
+# In[ ]:
 
 
 standard_reactions_pt_to_soc = (standard_reactions.
@@ -2361,7 +2364,7 @@ print(standard_reactions_pt_to_soc.shape)
 print(standard_reactions_pt_to_soc.head())
 
 
-# In[72]:
+# In[ ]:
 
 
 print(
@@ -2374,7 +2377,7 @@ print(
 )
 
 
-# In[35]:
+# In[ ]:
 
 
 (standard_reactions_pt_to_soc.
@@ -2383,7 +2386,7 @@ print(
 )
 
 
-# In[73]:
+# In[ ]:
 
 
 del c
@@ -2403,7 +2406,7 @@ del standard_reactions_pt_to_hlt
 
 # ### standard_reactions_snomed
 
-# In[86]:
+# In[ ]:
 
 
 standard_reactions_meddra_relationships = (pd.read_csv(
@@ -2431,7 +2434,7 @@ print(standard_reactions_meddra_relationships.shape)
 print(standard_reactions_meddra_relationships.head())
 
 
-# In[87]:
+# In[ ]:
 
 
 reactions = standard_reactions_meddra_relationships.MedDRA_concept_id_1.unique()
@@ -2444,7 +2447,7 @@ print(len(intersect))
 print(len(intersect)/len(reactions))
 
 
-# In[88]:
+# In[ ]:
 
 
 m_to_s_r = (concept_relationship.
@@ -2474,13 +2477,13 @@ print(m_to_s_r.SNOMED_concept_class_id.value_counts())
 print(m_to_s_r.head())
 
 
-# In[89]:
+# In[ ]:
 
 
 r2s = m_to_s_r.MedDRA_concept_id.unique()
 
 
-# In[90]:
+# In[ ]:
 
 
 pts = (standard_reactions_meddra_relationships.
@@ -2516,7 +2519,7 @@ print(joinedpt.shape)
 print(joinedpt.head())
 
 
-# In[91]:
+# In[ ]:
 
 
 hlts = (joinedpt.
@@ -2552,7 +2555,7 @@ print(joinedhlt.shape)
 print(joinedhlt.head())
 
 
-# In[92]:
+# In[ ]:
 
 
 hlgts = (joinedhlt.
@@ -2587,7 +2590,7 @@ print(joinedhlgt.shape)
 print(joinedhlgt.head())
 
 
-# In[93]:
+# In[ ]:
 
 
 socs = (joinedhlgt.
@@ -2625,7 +2628,7 @@ print(joinedsoc.shape)
 print(joinedsoc.head())
 
 
-# In[94]:
+# In[ ]:
 
 
 smeddraconcepts = joinedpt.MedDRA_concept_id_1.unique()
@@ -2640,7 +2643,7 @@ print(len(np.intersect1d(smeddraconcepts,allmeddraconcepts))/len(smeddraconcepts
 print(len(np.intersect1d(smeddraconcepts,allmeddraconcepts))/len(allmeddraconcepts))
 
 
-# In[95]:
+# In[ ]:
 
 
 smeddraconcepts = joinedhlt.MedDRA_concept_id_2.unique()
@@ -2655,7 +2658,7 @@ print(len(np.intersect1d(smeddraconcepts,allmeddraconcepts))/len(smeddraconcepts
 print(len(np.intersect1d(smeddraconcepts,allmeddraconcepts))/len(allmeddraconcepts))
 
 
-# In[96]:
+# In[ ]:
 
 
 smeddraconcepts = joinedhlgt.MedDRA_concept_id_3.unique()
@@ -2670,7 +2673,7 @@ print(len(np.intersect1d(smeddraconcepts,allmeddraconcepts))/len(smeddraconcepts
 print(len(np.intersect1d(smeddraconcepts,allmeddraconcepts))/len(allmeddraconcepts))
 
 
-# In[97]:
+# In[ ]:
 
 
 smeddraconcepts = joinedsoc.MedDRA_concept_id_4.unique()
@@ -2685,7 +2688,7 @@ print(len(np.intersect1d(smeddraconcepts,allmeddraconcepts))/len(smeddraconcepts
 print(len(np.intersect1d(smeddraconcepts,allmeddraconcepts))/len(allmeddraconcepts))
 
 
-# In[98]:
+# In[ ]:
 
 
 print(joinedsoc.head())
@@ -2700,7 +2703,7 @@ print(joinedsoc[joinedsoc.SNOMED_concept_id_4.notnull()].shape)
 print(joinedsoc.SNOMED_concept_id_4.nunique())
 
 
-# In[99]:
+# In[ ]:
 
 
 joinedsoc.SNOMED_concept_code_1 = joinedsoc.SNOMED_concept_code_1.astype(int)
@@ -2709,7 +2712,7 @@ joinedsoc.SNOMED_concept_code_3 = joinedsoc.SNOMED_concept_code_3.astype(float)
 joinedsoc.SNOMED_concept_code_4 = joinedsoc.SNOMED_concept_code_4.astype(float)
 
 
-# In[105]:
+# In[ ]:
 
 
 standard_reactions = (pd.
@@ -2724,7 +2727,7 @@ print(standard_reactions.shape)
 print(standard_reactions.head())
 
 
-# In[106]:
+# In[ ]:
 
 
 standard_reactions_meddrapt_to_snomed = (joinedsoc.
@@ -2757,7 +2760,7 @@ print(standard_reactions_meddrapt_to_snomed.shape)
 print(standard_reactions_meddrapt_to_snomed.head())
 
 
-# In[107]:
+# In[ ]:
 
 
 print(
@@ -2770,7 +2773,7 @@ print(
 )
 
 
-# In[22]:
+# In[ ]:
 
 
 (standard_reactions_meddrapt_to_snomed.
@@ -2779,7 +2782,7 @@ print(
 )
 
 
-# In[103]:
+# In[ ]:
 
 
 standard_reactions_meddrahlt_to_snomed = (joinedsoc.
@@ -2812,7 +2815,7 @@ print(standard_reactions_meddrahlt_to_snomed.shape)
 print(standard_reactions_meddrahlt_to_snomed.head())
 
 
-# In[24]:
+# In[ ]:
 
 
 print(
@@ -2825,7 +2828,13 @@ print(
 )
 
 
-# In[25]:
+# In[ ]:
+
+
+joinedsoc
+
+
+# In[ ]:
 
 
 standard_reactions_meddrahlgt_to_snomed = (joinedsoc.
@@ -2858,7 +2867,7 @@ print(standard_reactions_meddrahlgt_to_snomed.shape)
 print(standard_reactions_meddrahlgt_to_snomed.head())
 
 
-# In[26]:
+# In[ ]:
 
 
 print(
@@ -2871,7 +2880,7 @@ print(
 )
 
 
-# In[27]:
+# In[ ]:
 
 
 standard_reactions_meddrasoc_to_snomed = (joinedsoc.
@@ -2904,7 +2913,7 @@ print(standard_reactions_meddrasoc_to_snomed.shape)
 print(standard_reactions_meddrasoc_to_snomed.head())
 
 
-# In[28]:
+# In[ ]:
 
 
 print(
@@ -2917,7 +2926,7 @@ print(
 )
 
 
-# In[29]:
+# In[ ]:
 
 
 del m_to_s_r

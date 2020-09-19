@@ -30,14 +30,14 @@ patients = pd.read_csv(er_dir+'patient.csv.gz',
                        })
 
 
-# In[7]:
+# In[4]:
 
 
 age_col='patient_onsetage'
 aged = patients[patients[age_col].notnull()].reset_index(drop=True).copy()
 
 
-# In[8]:
+# In[5]:
 
 
 col = 'nichd'
@@ -61,7 +61,7 @@ aged.loc[eadolescence,col] = 'early_adolescence'
 aged.loc[ladolescence,col] = 'late_adolescence'
 
 
-# In[9]:
+# In[6]:
 
 
 col = 'ich_ema'
@@ -81,7 +81,7 @@ aged.loc[children,col] = 'children'
 aged.loc[adolescents,col] = 'adolescents'
 
 
-# In[10]:
+# In[7]:
 
 
 col = 'fda'
@@ -101,7 +101,7 @@ aged.loc[children,col] = 'children'
 aged.loc[adolescents,col] = 'adolescents'
 
 
-# In[11]:
+# In[8]:
 
 
 pediatric_patients = (aged.
@@ -111,20 +111,20 @@ print(pediatric_patients.shape)
 print(pediatric_patients.head())
 
 
-# In[12]:
+# In[9]:
 
 
 del patients
 del aged
 
 
-# In[13]:
+# In[10]:
 
 
 pediatric_patients.head()
 
 
-# In[16]:
+# In[11]:
 
 
 report = (pd.read_csv(er_dir+'report.csv.gz',
@@ -135,7 +135,7 @@ report = (pd.read_csv(er_dir+'report.csv.gz',
 report.head()
 
 
-# In[19]:
+# In[12]:
 
 
 df1 = pediatric_patients.copy()
@@ -152,21 +152,21 @@ pediatric_patients_report = pd.merge(df1,
 print(pediatric_patients_report.shape)
 
 
-# In[20]:
+# In[13]:
 
 
 del pediatric_patients
 del report
 
 
-# In[22]:
+# In[14]:
 
 
 report_serious = pd.read_csv(er_dir+'report_serious.csv.gz',compression='gzip')
 report_serious.head()
 
 
-# In[23]:
+# In[15]:
 
 
 df1 = pediatric_patients_report.copy()
@@ -182,27 +182,27 @@ pediatric_patients_report_serious = pd.merge(df1,
 print(pediatric_patients_report_serious.shape)
 
 
-# In[24]:
+# In[16]:
 
 
 pediatric_patients_report_serious.head()
 
 
-# In[25]:
+# In[17]:
 
 
 del report_serious
 del pediatric_patients_report
 
 
-# In[26]:
+# In[18]:
 
 
 reporter = pd.read_csv(er_dir+'reporter.csv.gz',compression='gzip')
 reporter.head()
 
 
-# In[27]:
+# In[19]:
 
 
 df1 = pediatric_patients_report_serious.copy()
@@ -218,31 +218,31 @@ pediatric_patients_report_serious_reporter = pd.merge(df1,
 print(pediatric_patients_report_serious_reporter.shape)
 
 
-# In[28]:
+# In[20]:
 
 
 pediatric_patients_report_serious_reporter.head()
 
 
-# In[29]:
+# In[21]:
 
 
 pediatric_patients_report_serious_reporter.info()
 
 
-# In[30]:
+# In[22]:
 
 
 del reporter
 
 
-# In[31]:
+# In[23]:
 
 
 del pediatric_patients_report_serious
 
 
-# In[32]:
+# In[24]:
 
 
 (pediatric_patients_report_serious_reporter.
@@ -251,14 +251,14 @@ del pediatric_patients_report_serious
 )
 
 
-# In[33]:
+# In[25]:
 
 
 ped_reports = pediatric_patients_report_serious_reporter.safetyreportid.astype(str).unique()
 len(ped_reports)
 
 
-# In[34]:
+# In[26]:
 
 
 pediatric_patients_report_serious_reporter = (pd.
@@ -269,7 +269,7 @@ pediatric_patients_report_serious_reporter = (pd.
 pediatric_patients_report_serious_reporter.head()
 
 
-# In[35]:
+# In[27]:
 
 
 pediatric_standard_drugs_atc = (pd.
@@ -285,7 +285,7 @@ pediatric_standard_drugs_atc.ATC_concept_id = pediatric_standard_drugs_atc.ATC_c
 pediatric_standard_drugs_atc.head()
 
 
-# In[36]:
+# In[28]:
 
 
 pediatric_standard_reactions = (pd.
@@ -297,7 +297,7 @@ pediatric_standard_reactions.MedDRA_concept_id = pediatric_standard_reactions.Me
 pediatric_standard_reactions.head()
 
 
-# In[37]:
+# In[29]:
 
 
 print(pediatric_patients_report_serious_reporter.head())
@@ -305,7 +305,7 @@ print(pediatric_standard_drugs_atc.head())
 print(pediatric_standard_reactions.head())
 
 
-# In[38]:
+# In[30]:
 
 
 len(np.intersect1d(
@@ -314,7 +314,7 @@ len(np.intersect1d(
 ))
 
 
-# In[39]:
+# In[31]:
 
 
 pediatric_patients_report_serious_reporter_drugs_reactions = (pediatric_patients_report_serious_reporter.
@@ -343,7 +343,7 @@ print(pediatric_patients_report_serious_reporter_drugs_reactions.head())
 print(pediatric_patients_report_serious_reporter_drugs_reactions.safetyreportid.nunique())
 
 
-# In[40]:
+# In[32]:
 
 
 (pediatric_patients_report_serious_reporter_drugs_reactions.
@@ -352,13 +352,13 @@ print(pediatric_patients_report_serious_reporter_drugs_reactions.safetyreportid.
 )
 
 
-# In[41]:
+# In[33]:
 
 
 del pediatric_patients_report_serious_reporter
 
 
-# In[42]:
+# In[34]:
 
 
 pediatric_standard_drugs = (pd.
@@ -374,7 +374,7 @@ pediatric_standard_drugs.RxNorm_concept_id = pediatric_standard_drugs.RxNorm_con
 pediatric_standard_drugs.head()
 
 
-# In[51]:
+# In[35]:
 
 
 import os
@@ -385,7 +385,7 @@ for rxfile in rxfiles:
     rxfile_dict[key] = pd.read_csv('../../RxNorm_relationships_tables/'+rxfile,engine='c',index_col=0)
 
 
-# In[58]:
+# In[36]:
 
 
 tobrand=[]
@@ -393,7 +393,7 @@ for rxfile in rxfile_dict.keys():
     tobrand.append(rxfile_dict[rxfile].query('concept_class_id_2=="Brand Name"'))
 
 
-# In[69]:
+# In[37]:
 
 
 a = pediatric_standard_drugs.copy()
@@ -408,7 +408,7 @@ m = (pd.merge(
 m[primarykey].nunique()
 
 
-# In[74]:
+# In[38]:
 
 
 m_renamed = (m.
@@ -423,7 +423,7 @@ m_renamed = (m.
 )
 
 
-# In[75]:
+# In[39]:
 
 
 (m_renamed.

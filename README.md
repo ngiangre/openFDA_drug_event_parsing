@@ -12,11 +12,11 @@ The order of code execution goes:
 
 20191230_rxnorm_hierarchy_tables.ipynb #requires vocabulary permissions to use the concepts from OHDSI's Athena
 
-Parsing.ipynb/Parsing.py
+Parsing.ipynb||Parsing.py
 
 -->
 
-openFDA_Entity_Relationship_Tables.ipynb/openFDA_Entity_Relationship_Tables.py
+openFDA_Entity_Relationship_Tables.ipynb||openFDA_Entity_Relationship_Tables.py
 
 -->
 
@@ -26,7 +26,7 @@ tableize_openFDA_files.sh # assumes you have cloned the tableize repository from
 
 -->
 
-Pediatrics_data_parsing.ipynb/Pediatrics_data_parsing.py
+Pediatrics_data_parsing.ipynb||Pediatrics_data_parsing.py
 
 -->
 

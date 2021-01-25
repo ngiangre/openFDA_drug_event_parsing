@@ -1,5 +1,7 @@
 # openFDA drug event parsing
 
+[![DOI](https://zenodo.org/badge/246321623.svg)](https://zenodo.org/badge/latestdoi/246321623)
+
 https://open.fda.gov/
 
 This repository contains the code used to download/extract/process the human drug event data found [here](https://open.fda.gov/downloads/).
